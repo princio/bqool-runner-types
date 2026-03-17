@@ -19,6 +19,10 @@ export interface RunnerJobRequest {
   no_session_persistence?: boolean;
   /** Opaque metadata stored by runner, queryable via tag.key=value */
   tags?: Record<string, string | number | null>;
+  /** Parent job ID (for child jobs in a batch) */
+  parent_id?: number;
+  /** Job type classifier */
+  job_type?: string;
 }
 
 export interface RunnerJobResponse {
@@ -27,17 +31,33 @@ export interface RunnerJobResponse {
   workdir: string;
 }
 
-export interface RunnerSession {
+// ── Job (abstract unit of work) ───────────────────────────────────────────────
+
+export interface Job {
   id: number;
-  workdir: string;
+  status: 'pending' | 'running' | 'done' | 'error' | 'waiting';
+  output_json: string | null;
+  tags: Record<string, string | number | null> | null;
+  parent_id: number | null;
+  job_type: string | null;
+  workdir: string | null;
+  created_at: string;
+  finished_at: string | null;
+  /** Null for meta jobs (no process) or in list responses */
+  process: JobProcess | null;
+}
+
+// ── JobProcess (Claude subprocess) ────────────────────────────────────────────
+
+export interface JobProcess {
+  id: number;
+  job_id: number;
   prompt: string;
   system_prompt: string | null;
   model: string | null;
   pid: number | null;
   claude_session_id: string | null;
-  status: 'running' | 'done' | 'error';
   exit_code: number | null;
-  created_at: string;
   started_at: string | null;
   finished_at: string | null;
   /** Only included in GET /api/jobs/:id, null in list responses */
@@ -45,7 +65,6 @@ export interface RunnerSession {
   /** Only included in GET /api/jobs/:id, null in list responses */
   stderr: string | null;
   error_message: string | null;
-  tags: Record<string, string | number | null> | null;
 }
 
 export interface RunnerQueueStatus {

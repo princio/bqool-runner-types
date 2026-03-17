@@ -6,7 +6,7 @@
  *
  * @example
  *   fetch(RUNNER_API.jobs.one(42))
- *   fetch(RUNNER_API.correction.item)
+ *   fetch(RUNNER_API.answer.criterion)
  */
 
 const BASE = '/api';
@@ -22,15 +22,15 @@ export const RUNNER_API = {
     status:  `${BASE}/queue/status`,
     stopAll: `${BASE}/queue/stop-all`,
   },
-  correction: {
-    booleanq:    `${BASE}/correction/booleanq`,
-    item:        `${BASE}/correction/item`,
-    coherence:   `${BASE}/correction/coherence`,
-    seed:        `${BASE}/correction/seed`,
-    fork:        `${BASE}/correction/fork`,
-    batchStart:  `${BASE}/correction/batch`,
-    batchStatus: (id: string) => `${BASE}/correction/batch/${id}`,
-    batchStop:   (id: string) => `${BASE}/correction/batch/${id}/stop`,
+  answer: {
+    booleanq:    `${BASE}/answer/booleanq`,
+    criterion:   `${BASE}/answer/criterion`,
+    coherence:   `${BASE}/answer/coherence`,
+    seed:        `${BASE}/answer/seed`,
+    fork:        `${BASE}/answer/fork`,
+    manyStart:  `${BASE}/answer/many`,
+    manyStatus: (id: string) => `${BASE}/answer/many/${id}`,
+    manyStop:   (id: string) => `${BASE}/answer/many/${id}/stop`,
   },
   rubricSeek: {
     run:         `${BASE}/rubric-seek/run`,
@@ -38,10 +38,18 @@ export const RUNNER_API = {
     batchStatus: (id: string) => `${BASE}/rubric-seek/batch/${id}`,
     batchStop:   (id: string) => `${BASE}/rubric-seek/batch/${id}/stop`,
   },
+  rubricDraft: {
+    run:         `${BASE}/rubric-draft/run`,
+    status:      (id: number) => `${BASE}/rubric-draft/${id}`,
+    answerStatus:(id: number, answerId: number) => `${BASE}/rubric-draft/${id}/answer/${answerId}`,
+  },
   rubricMerge: {
     createWorkdir: `${BASE}/rubric-merge/create-workdir`,
     status:        `${BASE}/rubric-merge/status`,
     importOutput:  `${BASE}/rubric-merge/import-output`,
+    trigger:       `${BASE}/rubric-merge/trigger`,
+    complete:      (id: number) => `${BASE}/rubric-merge/${id}/complete`,
+    jobStatus:     (id: number) => `${BASE}/rubric-merge/${id}`,
   },
   workdir: {
     answerCreate:          `${BASE}/workdir/answer`,

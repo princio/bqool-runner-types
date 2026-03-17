@@ -1,4 +1,4 @@
-export interface WorkdirRubricItem {
+export interface WorkdirCriterion {
   id: number;
   name: string;
   definition?: string;
@@ -6,11 +6,11 @@ export interface WorkdirRubricItem {
   position?: number;
 }
 
-export interface WorkdirRubricItems {
-  concepts: WorkdirRubricItem[];
-  expressions: WorkdirRubricItem[];
-  code: WorkdirRubricItem[];
-  errors: WorkdirRubricItem[];
+export interface WorkdirCriteria {
+  concepts: WorkdirCriterion[];
+  expressions: WorkdirCriterion[];
+  code: WorkdirCriterion[];
+  errors: WorkdirCriterion[];
 }
 
 export interface AnswerWorkdirRequest {
@@ -19,7 +19,7 @@ export interface AnswerWorkdirRequest {
   student_name: string;
   answer_text: string;
   question_text: string;
-  rubric_items: WorkdirRubricItems;
+  criteria: WorkdirCriteria;
   booleanqs_by_item: Record<string, { id: number; text: string }[]>;
 }
 
@@ -62,7 +62,7 @@ export interface AnswerOutputWriteResponse {
 export interface PopulationWorkdirRequest {
   question_id: number;
   item_type: string;
-  rubric_items: WorkdirRubricItems;
+  criteria: WorkdirCriteria;
   booleanqs_by_item: Record<string, { id: number; text: string }[]>;
   question_text: string;
 }

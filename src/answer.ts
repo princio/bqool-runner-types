@@ -1,28 +1,28 @@
 // ── Request / response types ──────────────────────────────────────────────────
 
-export interface CorrectionBooleanqRequest {
+export interface AnswerBooleanqRequest {
   answer_id: number;
   question_id: number;
   student_name: string;
   answer_text: string;
   item_type: string;
-  item: { id: number; name: string; definition?: string; severity?: number };
+  criterion: { id: number; name: string; definition?: string; severity?: number };
   booleanq: { id: number; text: string };
   model?: string;
 }
 
-export interface CorrectionItemRequest {
+export interface AnswerCriterionRequest {
   answer_id: number;
   question_id: number;
   student_name: string;
   answer_text: string;
   item_type: string;
-  item: { id: number; name: string; definition?: string; severity?: number };
+  criterion: { id: number; name: string; definition?: string; severity?: number };
   booleanqs: { id: number; text: string }[];
   model?: string;
 }
 
-export interface CorrectionCoherenceRequest {
+export interface AnswerCoherenceRequest {
   answer_id: number;
   question_id: number;
   student_name: string;
@@ -30,7 +30,7 @@ export interface CorrectionCoherenceRequest {
   model?: string;
 }
 
-export interface CorrectionSeedRequest {
+export interface AnswerSeedRequest {
   answer_id: number;
   question_id: number;
   student_name: string;
@@ -39,17 +39,17 @@ export interface CorrectionSeedRequest {
   model?: string;
 }
 
-export interface CorrectionSeedResponse {
+export interface AnswerSeedResponse {
   session_id: string;
   workdir_label: string;
 }
 
-export interface CorrectionForkRequest {
+export interface AnswerForkRequest {
   answer_id: number;
   question_id: number;
   student_name: string;
   item_type: string;
-  item: { id: number; name: string; definition?: string; severity?: number };
+  criterion: { id: number; name: string; definition?: string; severity?: number };
   booleanqs: { id: number; text: string }[];
   parent_session_id: string;
   parent_workdir_label: string;
@@ -63,7 +63,7 @@ export interface BooleanQOutput {
   rationale: string;
 }
 
-export interface ItemCorrectionOutput {
+export interface CriterionOutput {
   'booleanq-questions': BooleanQOutput[];
 }
 
@@ -72,59 +72,59 @@ export interface CoherenceOutput {
   rationale: string;
 }
 
-// ── R7: Correction batch ──────────────────────────────────────────────────────
+// ── Many types (backend-side orchestration helper) ────────────────────────────
 
-export interface CorrectionBatchItem {
+export interface AnswerManyCriterion {
   id: number;
   name: string;
   definition?: string;
   severity?: number;
 }
 
-export interface CorrectionBatchAnswerEntry {
+export interface AnswerManyEntry {
   answer_id: number;
   student_name: string;
   answer_text: string;
-  items: Array<{
-    item: CorrectionBatchItem;
+  criteria: Array<{
+    criterion: AnswerManyCriterion;
     booleanqs: { id: number; text: string }[];
   }>;
 }
 
-export interface CorrectionBatchStartRequest {
+export interface AnswerManyStartRequest {
   question_id: number;
   item_type: string;
   concurrency: number;
   model?: string;
   use_seed_fork?: boolean;
-  answers: CorrectionBatchAnswerEntry[];
+  answers: AnswerManyEntry[];
 }
 
-export interface CorrectionBatchStartResponse {
+export interface AnswerManyStartResponse {
   batch_id: string;
 }
 
-export type CorrectionBatchJobStatus = 'pending' | 'running' | 'done' | 'error';
+export type AnswerManyJobStatus = 'pending' | 'running' | 'done' | 'error';
 
-export interface CorrectionBatchJobState {
+export interface AnswerManyJobState {
   answer_id: number;
   student_name: string;
-  item_id: number;
-  item_name: string;
-  status: CorrectionBatchJobStatus;
+  criterion_id: number;
+  criterion_name: string;
+  status: AnswerManyJobStatus;
   error?: string;
   started_at?: string;
   finished_at?: string;
   results?: BooleanQOutput[];
 }
 
-export type CorrectionBatchPhase = 'seeding' | 'forking' | 'running' | 'done' | 'stopped';
+export type AnswerManyPhase = 'seeding' | 'forking' | 'running' | 'done' | 'stopped';
 
-export interface CorrectionBatchStatus {
+export interface AnswerManyStatus {
   batch_id: string;
   question_id: number;
   item_type: string;
-  phase: CorrectionBatchPhase;
+  phase: AnswerManyPhase;
   concurrency: number;
   total: number;
   completed: number;
@@ -132,7 +132,6 @@ export interface CorrectionBatchStatus {
   seeds_total?: number;
   seeds_completed?: number;
   log: string[];
-  jobs: CorrectionBatchJobState[];
-  /** Cursor so callers can fetch only newly completed results since last poll. */
+  jobs: AnswerManyJobState[];
   results_cursor: number;
 }
