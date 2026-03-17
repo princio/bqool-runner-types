@@ -1,21 +1,3 @@
-// ── AI output types ───────────────────────────────────────────────────────────
-
-export interface AiBooleanQResult {
-  id: number;
-  answer: boolean;
-  citations: string[];
-  rationale: string;
-}
-
-export interface AiItemCorrectionOutput {
-  'booleanq-questions': AiBooleanQResult[];
-}
-
-export interface AiCoherenceOutput {
-  level: number;
-  rationale: string;
-}
-
 // ── Request / response types ──────────────────────────────────────────────────
 
 export interface CorrectionBooleanqRequest {
