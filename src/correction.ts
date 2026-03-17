@@ -55,3 +55,19 @@ export interface CorrectionForkRequest {
   parent_workdir_label: string;
   model?: string;
 }
+
+export interface BooleanQOutput {
+  id: number;
+  answer: boolean;
+  citations: string[];
+  rationale: string;
+}
+
+export interface ItemCorrectionOutput {
+  'booleanq-questions': BooleanQOutput[];
+}
+
+export interface CoherenceOutput {
+  level: number;
+  rationale: string;
+}

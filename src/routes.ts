@@ -37,4 +37,10 @@ export const RUNNER_API = {
     status:        `${BASE}/rubric-merge/status`,
     importOutput:  `${BASE}/rubric-merge/import-output`,
   },
+  workdir: {
+    answerCreate:     `${BASE}/workdir/answer`,
+    answerRebuild:    `${BASE}/workdir/answer/rebuild`,
+    answerStatus:     `${BASE}/workdir/answer/status`,
+    populationCreate: `${BASE}/workdir/population`,
+  },
 } as const;
