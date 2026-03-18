@@ -1,3 +1,24 @@
+export interface RubricSeekBooleanqItem {
+  text: string;
+}
+
+export interface RubricSeekBaseItem {
+  name: string;
+  definition: string;
+  booleanqs: RubricSeekBooleanqItem[];
+}
+
+export interface RubricSeekSeverityItem extends RubricSeekBaseItem {
+  severity: number;
+}
+
+export interface RubricSeekOutput {
+  concepts: RubricSeekBaseItem[];
+  expressions: RubricSeekSeverityItem[];
+  code: RubricSeekSeverityItem[];
+  errors: RubricSeekSeverityItem[];
+}
+
 export interface RubricSeekRequest {
   question_id: number;
   student_id: number;

@@ -67,6 +67,12 @@ export interface JobProcess {
   error_message: string | null;
 }
 
+export interface JobListQuery {
+  status?: string;
+  limit?: number;
+  [key: `tag.${string}`]: string;
+}
+
 export interface RunnerQueueStatus {
   concurrency: number;
   running: number;
