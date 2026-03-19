@@ -1,3 +1,3 @@
 "use strict";
-// ── Rubric-Draft: DB-backed batch seek ───────────────────────────────────────
+// ── Rubric-Draft: batch status types ──────────────────────────────────────────
 Object.defineProperty(exports, "__esModule", { value: true });

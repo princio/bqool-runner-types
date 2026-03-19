@@ -1,18 +1,3 @@
-export interface RubricDraftAnswer {
-    student_id: number;
-    student_name: string;
-    answer_text: string;
-}
-export interface RubricDraftStartRequest {
-    question_id: number;
-    question_text: string;
-    item_type: string;
-    model?: string;
-    answers: RubricDraftAnswer[];
-}
-export interface RubricDraftStartResponse {
-    id: number;
-}
 export type RubricDraftChildStatus = 'pending' | 'running' | 'done' | 'error';
 export interface RubricDraftChildState {
     id: number;

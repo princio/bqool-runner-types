@@ -1,7 +1,7 @@
 import type { Job, JobListQuery, RunnerJobRequest, RunnerJobResponse, RunnerQueueStatus } from './job';
 import type { AnswerBooleanqRequest, AnswerCriterionRequest, AnswerCoherenceRequest, AnswerSeedRequest, AnswerSeedResponse, AnswerForkRequest, AnswerManyStartRequest, AnswerManyStartResponse, AnswerManyStatus, BooleanQOutput, CriterionOutput, CoherenceOutput } from './answer';
-import type { RubricSeekRequest, RubricSeekOutput, RubricSeekBatchStartRequest, RubricSeekBatchStartResponse, RubricSeekBatchStatus } from './rubric-seek';
-import type { RubricDraftStartRequest, RubricDraftStartResponse, RubricDraftStatus, RubricDraftChildState } from './rubric-draft';
+import type { RubricSeekRequest, RubricSeekResponse } from './rubric-seek';
+import type { RubricDraftStatus, RubricDraftChildState } from './rubric-draft';
 import type { RubricMergeCreateWorkdirRequest, RubricMergeWorkdirResponse, RubricMergeStatusResponse, RubricMergeImportResponse, RubricMergeTriggerRequest, RubricMergeTriggerResponse, RubricMergeCompleteResponse, RubricMergeJobStatusResponse } from './rubric-merge';
 import type { AnswerWorkdirRequest, AnswerWorkdirResponse, AnswerWorkdirStatusRequest, AnswerWorkdirStatusResponse, AnswerOutputReadResponse, AnswerOutputWriteRequest, AnswerOutputWriteResponse, PopulationWorkdirRequest, PopulationWorkdirResponse, PopulationOutputReadResponse, PopulationBatchWorkdirRequest, PopulationBatchWorkdirResponse, PopulationBatchListResponse } from './workdir';
 /**
@@ -115,39 +115,11 @@ export interface RunnerApiTypeMap {
             response: void;
         };
     };
-    rubricSeek: {
-        run: {
-            method: 'POST';
-            body: RubricSeekRequest;
-            response: RubricSeekOutput;
-        };
-        batchStart: {
-            method: 'POST';
-            body: RubricSeekBatchStartRequest;
-            response: RubricSeekBatchStartResponse;
-        };
-        batchStatus: {
-            method: 'GET';
-            params: {
-                id: string;
-            };
-            body: never;
-            response: RubricSeekBatchStatus;
-        };
-        batchStop: {
-            method: 'POST';
-            params: {
-                id: string;
-            };
-            body: never;
-            response: void;
-        };
-    };
     rubricDraft: {
         run: {
             method: 'POST';
-            body: RubricDraftStartRequest;
-            response: RubricDraftStartResponse;
+            body: RubricSeekRequest;
+            response: RubricSeekResponse;
         };
         status: {
             method: 'GET';
@@ -166,14 +138,12 @@ export interface RunnerApiTypeMap {
             body: never;
             response: RubricDraftChildState;
         };
-    };
-    rubricMerge: {
-        createWorkdir: {
+        mergeCreateWorkdir: {
             method: 'POST';
             body: RubricMergeCreateWorkdirRequest;
             response: RubricMergeWorkdirResponse;
         };
-        status: {
+        mergeStatus: {
             method: 'GET';
             query: {
                 question_id: number;
@@ -182,7 +152,7 @@ export interface RunnerApiTypeMap {
             body: never;
             response: RubricMergeStatusResponse;
         };
-        importOutput: {
+        mergeImportOutput: {
             method: 'POST';
             body: {
                 question_id: number;
@@ -190,12 +160,12 @@ export interface RunnerApiTypeMap {
             };
             response: RubricMergeImportResponse;
         };
-        trigger: {
+        mergeTrigger: {
             method: 'POST';
             body: RubricMergeTriggerRequest;
             response: RubricMergeTriggerResponse;
         };
-        complete: {
+        mergeComplete: {
             method: 'POST';
             params: {
                 id: number;
@@ -203,7 +173,7 @@ export interface RunnerApiTypeMap {
             body: never;
             response: RubricMergeCompleteResponse;
         };
-        jobStatus: {
+        mergeJobStatus: {
             method: 'GET';
             params: {
                 id: number;
@@ -313,37 +283,25 @@ export declare const RUNNER_API: {
         /** POST {id} → void */
         readonly manyStop: (id: string) => string;
     };
-    readonly rubricSeek: {
-        /** POST RubricSeekRequest → RubricSeekOutput */
-        readonly run: "/api/rubric-seek/run";
-        /** POST RubricSeekBatchStartRequest → RubricSeekBatchStartResponse */
-        readonly batchStart: "/api/rubric-seek/batch";
-        /** GET {id} → RubricSeekBatchStatus */
-        readonly batchStatus: (id: string) => string;
-        /** POST {id} → void */
-        readonly batchStop: (id: string) => string;
-    };
     readonly rubricDraft: {
-        /** POST RubricDraftStartRequest → RubricDraftStartResponse */
+        /** POST RubricSeekRequest → RubricSeekResponse */
         readonly run: "/api/rubric-draft/run";
         /** GET {id} → RubricDraftStatus */
         readonly status: (id: number) => string;
         /** GET {id, answerId} → RubricDraftChildState */
         readonly answerStatus: (id: number, answerId: number) => string;
-    };
-    readonly rubricMerge: {
         /** POST RubricMergeCreateWorkdirRequest → RubricMergeWorkdirResponse */
-        readonly createWorkdir: "/api/rubric-merge/create-workdir";
+        readonly mergeCreateWorkdir: "/api/rubric-draft/merge/create-workdir";
         /** GET { question_id, item_type } → RubricMergeStatusResponse */
-        readonly status: "/api/rubric-merge/status";
+        readonly mergeStatus: "/api/rubric-draft/merge/status";
         /** POST { question_id, item_type } → RubricMergeImportResponse */
-        readonly importOutput: "/api/rubric-merge/import-output";
+        readonly mergeImportOutput: "/api/rubric-draft/merge/import-output";
         /** POST RubricMergeTriggerRequest → RubricMergeTriggerResponse */
-        readonly trigger: "/api/rubric-merge/trigger";
+        readonly mergeTrigger: "/api/rubric-draft/merge/trigger";
         /** POST {id} → RubricMergeCompleteResponse */
-        readonly complete: (id: number) => string;
+        readonly mergeComplete: (id: number) => string;
         /** GET {id} → RubricMergeJobStatusResponse */
-        readonly jobStatus: (id: number) => string;
+        readonly mergeJobStatus: (id: number) => string;
     };
     readonly workdir: {
         /** POST AnswerWorkdirRequest → AnswerWorkdirResponse */

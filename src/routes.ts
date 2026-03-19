@@ -21,14 +21,9 @@ import type {
 } from './answer';
 import type {
   RubricSeekRequest,
-  RubricSeekOutput,
-  RubricSeekBatchStartRequest,
-  RubricSeekBatchStartResponse,
-  RubricSeekBatchStatus,
+  RubricSeekResponse,
 } from './rubric-seek';
 import type {
-  RubricDraftStartRequest,
-  RubricDraftStartResponse,
   RubricDraftStatus,
   RubricDraftChildState,
 } from './rubric-draft';
@@ -86,24 +81,16 @@ export interface RunnerApiTypeMap {
     manyStatus: { method: 'GET';  params: { id: string }; body: never; response: AnswerManyStatus };
     manyStop:   { method: 'POST'; params: { id: string }; body: never; response: void };
   };
-  rubricSeek: {
-    run:         { method: 'POST'; body: RubricSeekRequest;           response: RubricSeekOutput };
-    batchStart:  { method: 'POST'; body: RubricSeekBatchStartRequest; response: RubricSeekBatchStartResponse };
-    batchStatus: { method: 'GET';  params: { id: string }; body: never; response: RubricSeekBatchStatus };
-    batchStop:   { method: 'POST'; params: { id: string }; body: never; response: void };
-  };
   rubricDraft: {
-    run:          { method: 'POST'; body: RubricDraftStartRequest; response: RubricDraftStartResponse };
-    status:       { method: 'GET';  params: { id: number }; body: never; response: RubricDraftStatus };
-    answerStatus: { method: 'GET';  params: { id: number; answerId: number }; body: never; response: RubricDraftChildState };
-  };
-  rubricMerge: {
-    createWorkdir: { method: 'POST'; body: RubricMergeCreateWorkdirRequest; response: RubricMergeWorkdirResponse };
-    status:        { method: 'GET';  query: { question_id: number; item_type: string }; body: never; response: RubricMergeStatusResponse };
-    importOutput:  { method: 'POST'; body: { question_id: number; item_type: string }; response: RubricMergeImportResponse };
-    trigger:       { method: 'POST'; body: RubricMergeTriggerRequest; response: RubricMergeTriggerResponse };
-    complete:      { method: 'POST'; params: { id: number }; body: never; response: RubricMergeCompleteResponse };
-    jobStatus:     { method: 'GET';  params: { id: number }; body: never; response: RubricMergeJobStatusResponse };
+    run:           { method: 'POST'; body: RubricSeekRequest;     response: RubricSeekResponse };
+    status:        { method: 'GET';  params: { id: number }; body: never; response: RubricDraftStatus };
+    answerStatus:  { method: 'GET';  params: { id: number; answerId: number }; body: never; response: RubricDraftChildState };
+    mergeCreateWorkdir: { method: 'POST'; body: RubricMergeCreateWorkdirRequest; response: RubricMergeWorkdirResponse };
+    mergeStatus:        { method: 'GET';  query: { question_id: number; item_type: string }; body: never; response: RubricMergeStatusResponse };
+    mergeImportOutput:  { method: 'POST'; body: { question_id: number; item_type: string }; response: RubricMergeImportResponse };
+    mergeTrigger:       { method: 'POST'; body: RubricMergeTriggerRequest; response: RubricMergeTriggerResponse };
+    mergeComplete:      { method: 'POST'; params: { id: number }; body: never; response: RubricMergeCompleteResponse };
+    mergeJobStatus:     { method: 'GET';  params: { id: number }; body: never; response: RubricMergeJobStatusResponse };
   };
   workdir: {
     answerCreate:          { method: 'POST'; body: AnswerWorkdirRequest;         response: AnswerWorkdirResponse };
@@ -170,37 +157,25 @@ export const RUNNER_API = {
     /** POST {id} → void */
     manyStop:   (id: string) => `${BASE}/answer/many/${id}/stop`,
   },
-  rubricSeek: {
-    /** POST RubricSeekRequest → RubricSeekOutput */
-    run:         `${BASE}/rubric-seek/run`,
-    /** POST RubricSeekBatchStartRequest → RubricSeekBatchStartResponse */
-    batchStart:  `${BASE}/rubric-seek/batch`,
-    /** GET {id} → RubricSeekBatchStatus */
-    batchStatus: (id: string) => `${BASE}/rubric-seek/batch/${id}`,
-    /** POST {id} → void */
-    batchStop:   (id: string) => `${BASE}/rubric-seek/batch/${id}/stop`,
-  },
   rubricDraft: {
-    /** POST RubricDraftStartRequest → RubricDraftStartResponse */
-    run:          `${BASE}/rubric-draft/run`,
+    /** POST RubricSeekRequest → RubricSeekResponse */
+    run:           `${BASE}/rubric-draft/run`,
     /** GET {id} → RubricDraftStatus */
-    status:       (id: number) => `${BASE}/rubric-draft/${id}`,
+    status:        (id: number) => `${BASE}/rubric-draft/${id}`,
     /** GET {id, answerId} → RubricDraftChildState */
-    answerStatus: (id: number, answerId: number) => `${BASE}/rubric-draft/${id}/answer/${answerId}`,
-  },
-  rubricMerge: {
+    answerStatus:  (id: number, answerId: number) => `${BASE}/rubric-draft/${id}/answer/${answerId}`,
     /** POST RubricMergeCreateWorkdirRequest → RubricMergeWorkdirResponse */
-    createWorkdir: `${BASE}/rubric-merge/create-workdir`,
+    mergeCreateWorkdir: `${BASE}/rubric-draft/merge/create-workdir`,
     /** GET { question_id, item_type } → RubricMergeStatusResponse */
-    status:        `${BASE}/rubric-merge/status`,
+    mergeStatus:        `${BASE}/rubric-draft/merge/status`,
     /** POST { question_id, item_type } → RubricMergeImportResponse */
-    importOutput:  `${BASE}/rubric-merge/import-output`,
+    mergeImportOutput:  `${BASE}/rubric-draft/merge/import-output`,
     /** POST RubricMergeTriggerRequest → RubricMergeTriggerResponse */
-    trigger:       `${BASE}/rubric-merge/trigger`,
+    mergeTrigger:       `${BASE}/rubric-draft/merge/trigger`,
     /** POST {id} → RubricMergeCompleteResponse */
-    complete:      (id: number) => `${BASE}/rubric-merge/${id}/complete`,
+    mergeComplete:      (id: number) => `${BASE}/rubric-draft/merge/${id}/complete`,
     /** GET {id} → RubricMergeJobStatusResponse */
-    jobStatus:     (id: number) => `${BASE}/rubric-merge/${id}`,
+    mergeJobStatus:     (id: number) => `${BASE}/rubric-draft/merge/${id}`,
   },
   workdir: {
     /** POST AnswerWorkdirRequest → AnswerWorkdirResponse */

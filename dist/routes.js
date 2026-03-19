@@ -51,37 +51,25 @@ exports.RUNNER_API = {
         /** POST {id} → void */
         manyStop: (id) => `${BASE}/answer/many/${id}/stop`,
     },
-    rubricSeek: {
-        /** POST RubricSeekRequest → RubricSeekOutput */
-        run: `${BASE}/rubric-seek/run`,
-        /** POST RubricSeekBatchStartRequest → RubricSeekBatchStartResponse */
-        batchStart: `${BASE}/rubric-seek/batch`,
-        /** GET {id} → RubricSeekBatchStatus */
-        batchStatus: (id) => `${BASE}/rubric-seek/batch/${id}`,
-        /** POST {id} → void */
-        batchStop: (id) => `${BASE}/rubric-seek/batch/${id}/stop`,
-    },
     rubricDraft: {
-        /** POST RubricDraftStartRequest → RubricDraftStartResponse */
+        /** POST RubricSeekRequest → RubricSeekResponse */
         run: `${BASE}/rubric-draft/run`,
         /** GET {id} → RubricDraftStatus */
         status: (id) => `${BASE}/rubric-draft/${id}`,
         /** GET {id, answerId} → RubricDraftChildState */
         answerStatus: (id, answerId) => `${BASE}/rubric-draft/${id}/answer/${answerId}`,
-    },
-    rubricMerge: {
         /** POST RubricMergeCreateWorkdirRequest → RubricMergeWorkdirResponse */
-        createWorkdir: `${BASE}/rubric-merge/create-workdir`,
+        mergeCreateWorkdir: `${BASE}/rubric-draft/merge/create-workdir`,
         /** GET { question_id, item_type } → RubricMergeStatusResponse */
-        status: `${BASE}/rubric-merge/status`,
+        mergeStatus: `${BASE}/rubric-draft/merge/status`,
         /** POST { question_id, item_type } → RubricMergeImportResponse */
-        importOutput: `${BASE}/rubric-merge/import-output`,
+        mergeImportOutput: `${BASE}/rubric-draft/merge/import-output`,
         /** POST RubricMergeTriggerRequest → RubricMergeTriggerResponse */
-        trigger: `${BASE}/rubric-merge/trigger`,
+        mergeTrigger: `${BASE}/rubric-draft/merge/trigger`,
         /** POST {id} → RubricMergeCompleteResponse */
-        complete: (id) => `${BASE}/rubric-merge/${id}/complete`,
+        mergeComplete: (id) => `${BASE}/rubric-draft/merge/${id}/complete`,
         /** GET {id} → RubricMergeJobStatusResponse */
-        jobStatus: (id) => `${BASE}/rubric-merge/${id}`,
+        mergeJobStatus: (id) => `${BASE}/rubric-draft/merge/${id}`,
     },
     workdir: {
         /** POST AnswerWorkdirRequest → AnswerWorkdirResponse */
