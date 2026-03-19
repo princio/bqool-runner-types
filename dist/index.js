@@ -16,8 +16,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./job"), exports);
 __exportStar(require("./answer"), exports);
-__exportStar(require("./rubric-seek"), exports);
 __exportStar(require("./rubric-draft"), exports);
-__exportStar(require("./rubric-merge"), exports);
 __exportStar(require("./workdir"), exports);
 __exportStar(require("./routes"), exports);

@@ -1,3 +1,35 @@
+export interface RubricSeekBooleanqItem {
+    text: string;
+}
+export interface RubricSeekBaseItem {
+    name: string;
+    definition: string;
+    booleanqs: RubricSeekBooleanqItem[];
+}
+export interface RubricSeekSeverityItem extends RubricSeekBaseItem {
+    severity: number;
+}
+export interface RubricSeekOutput {
+    concepts: RubricSeekBaseItem[];
+    expressions: RubricSeekSeverityItem[];
+    code: RubricSeekSeverityItem[];
+    errors: RubricSeekSeverityItem[];
+}
+export interface RubricSeekAnswer {
+    student_id: number;
+    student_name: string;
+    answer_text: string;
+}
+export interface RubricSeekRequest {
+    question_id: number;
+    question_text: string;
+    item_type: string;
+    model?: string;
+    answers: RubricSeekAnswer[];
+}
+export interface RubricSeekResponse {
+    id: number;
+}
 export type RubricDraftChildStatus = 'pending' | 'running' | 'done' | 'error';
 export interface RubricDraftChildState {
     id: number;
@@ -17,5 +49,40 @@ export interface RubricDraftStatus {
     running: number;
     failed: number;
     children: RubricDraftChildState[];
+}
+export interface RubricMergeCreateWorkdirRequest {
+    question_id: number;
+    item_type: string;
+}
+export interface RubricMergeWorkdirResponse {
+    workdir: string;
+    relativePath: string;
+}
+export interface RubricMergeStatusResponse {
+    hasMergeWorkdir: boolean;
+    hasOutput: boolean;
+    relativePath?: string;
+}
+export interface RubricMergeImportResponse {
+    population_id: string;
+}
+export interface RubricMergeTriggerRequest {
+    rubric_draft_id: number;
+}
+export interface RubricMergeTriggerResponse {
+    id: number;
+    workdir: string;
+    relativePath: string;
+}
+export interface RubricMergeCompleteResponse {
+    ok: boolean;
+    output: unknown;
+    population_id: string;
+}
+export interface RubricMergeJobStatusResponse {
+    id: number;
+    status: 'waiting' | 'done' | 'error';
+    workdir: string;
+    output: unknown | null;
 }
 //# sourceMappingURL=rubric-draft.d.ts.map

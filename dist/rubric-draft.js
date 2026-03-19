@@ -1,3 +1,3 @@
 "use strict";
-// ── Rubric-Draft: batch status types ──────────────────────────────────────────
+// ── Seek: schema types ────────────────────────────────────────────────────────
 Object.defineProperty(exports, "__esModule", { value: true });

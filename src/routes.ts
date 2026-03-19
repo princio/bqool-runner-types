@@ -22,12 +22,8 @@ import type {
 import type {
   RubricSeekRequest,
   RubricSeekResponse,
-} from './rubric-seek';
-import type {
   RubricDraftStatus,
   RubricDraftChildState,
-} from './rubric-draft';
-import type {
   RubricMergeCreateWorkdirRequest,
   RubricMergeWorkdirResponse,
   RubricMergeStatusResponse,
@@ -36,7 +32,7 @@ import type {
   RubricMergeTriggerResponse,
   RubricMergeCompleteResponse,
   RubricMergeJobStatusResponse,
-} from './rubric-merge';
+} from './rubric-draft';
 import type {
   AnswerWorkdirRequest,
   AnswerWorkdirResponse,
