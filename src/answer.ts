@@ -1,12 +1,14 @@
 // ── Request / response types ──────────────────────────────────────────────────
 
+import type { CriterionType } from "@princio/bqool";
+
 export interface AnswerBooleanqRequest {
   answer_id: number;
   question_id: number;
   student_name: string;
   answer_text: string;
-  item_type: string;
-  criterion: { id: number; name: string; definition?: string; severity?: number };
+  criterion_type: CriterionType;
+  criterion: { id: number; name: string; definition: string; severity?: number };
   booleanq: { id: number; text: string };
   model?: string;
 }

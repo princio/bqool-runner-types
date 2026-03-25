@@ -6,6 +6,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "dependencies": {
+    "@princio/bqool": "github:princio/bqool"
+  },
   "devDependencies": {
     "typescript": "^5.5.0"
   }

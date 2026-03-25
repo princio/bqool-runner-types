@@ -1,19 +1,19 @@
-export interface RubricSeekBooleanqItem {
+export interface RubricSeekBooleanq {
     text: string;
 }
-export interface RubricSeekBaseItem {
+export interface RubricSeekConcept {
     name: string;
     definition: string;
-    booleanqs: RubricSeekBooleanqItem[];
+    booleanqs: RubricSeekBooleanq[];
 }
-export interface RubricSeekSeverityItem extends RubricSeekBaseItem {
+export interface RubricSeekSeverity extends RubricSeekConcept {
     severity: number;
 }
 export interface RubricSeekOutput {
-    concepts: RubricSeekBaseItem[];
-    expressions: RubricSeekSeverityItem[];
-    code: RubricSeekSeverityItem[];
-    errors: RubricSeekSeverityItem[];
+    concepts: RubricSeekConcept[];
+    expressions: RubricSeekSeverity[];
+    code: RubricSeekSeverity[];
+    errors: RubricSeekSeverity[];
 }
 export interface RubricSeekAnswer {
     student_id: number;
